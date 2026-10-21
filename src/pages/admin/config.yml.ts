@@ -1,0 +1,85 @@
+﻿import type { APIRoute } from 'astro';
+
+export const GET: APIRoute = async () => {
+  return new Response(`backend:
+  name: test-repo
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "site_content"
+    label: "Site Management (Zero-Code)"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "general_and_skills"
+        label: "Profile, Themes & Skills"
+        file: "src/data/siteContent.json"
+        fields:
+          - label: "Profile & Settings"
+            name: "settings"
+            widget: "object"
+            fields:
+              - { label: "Default Theme", name: "defaultTheme", widget: "select", options: ["cyber", "sunset", "matrix", "light"], default: "cyber" }
+              - { label: "Full Name", name: "name", widget: "string" }
+              - { label: "Professional Title", name: "role", widget: "string" }
+              - { label: "Short Bio", name: "bio", widget: "text" }
+              - { label: "Official Email", name: "email", widget: "string" }
+              - { label: "Phone / WhatsApp Display", name: "phone", widget: "string" }
+              - { label: "WhatsApp Direct Link", name: "whatsappUrl", widget: "string" }
+              - { label: "LinkedIn URL", name: "linkedinUrl", widget: "string" }
+              - { label: "GitHub URL", name: "githubUrl", widget: "string" }
+              - { label: "Facebook URL", name: "facebookUrl", widget: "string" }
+
+          - label: "Technical Skills Categories"
+            name: "skills"
+            widget: "list"
+            fields:
+              - { label: "Category Name", name: "category", widget: "string" }
+              - { label: "Skills in this Category", name: "items", widget: "list" }
+
+  - name: "projects"
+    label: "Featured Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Badge / Category", name: "badge", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Technologies (List)", name: "tech", widget: "list" }
+      - { label: "Live Demo URL", name: "liveUrl", widget: "string", required: false }
+      - { label: "GitHub Source URL", name: "githubUrl", widget: "string", required: false }
+
+  - name: "certificates"
+    label: "Credentials & Certificates"
+    folder: "src/content/certificates"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Certificate Title", name: "title", widget: "string" }
+      - { label: "Issuer", name: "issuer", widget: "string" }
+      - { label: "Badge / Level", name: "badge", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["AI & Cloud", "Data & Analytics", "Systems & Security", "Professional Skills"] }
+      - { label: "Issue Date", name: "date", widget: "string" }
+      - { label: "Verification Code / ID", name: "verification", widget: "string", required: false }
+      - { label: "Official Verification URL", name: "link", widget: "string", required: false }
+
+  - name: "blogs"
+    label: "Articles & Case Studies"
+    folder: "src/content/blogs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Article Title", name: "title", widget: "string" }
+      - { label: "Publication Date", name: "date", widget: "datetime" }
+      - { label: "Category / Tag", name: "tag", widget: "string" }
+      - { label: "Summary / Overview", name: "summary", widget: "text" }
+      - { label: "Body (Markdown)", name: "body", widget: "markdown" }`, {
+    headers: {
+      'Content-Type': 'text/yaml'
+    }
+  });
+};
