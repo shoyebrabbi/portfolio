@@ -2,6 +2,7 @@
   name: git-gateway
   branch: main
 
+# আপলোড করা মিডিয়া ফাইলের লোকেশন
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
