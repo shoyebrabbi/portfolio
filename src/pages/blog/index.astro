@@ -1,0 +1,120 @@
+﻿---
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+
+const articles = [
+  {
+    title: "Optimizing MikroTik BDIX Bandwidth & Queue Management",
+    date: "October 2026",
+    tag: "Networking",
+    summary: "A practical case study on configuring simple queues, tree queues, and mangle rules to prioritize local ISP BDIX traffic.",
+    slug: "mikrotik-bdix-optimization"
+  },
+  {
+    title: "SQL Query Optimization for High-Volume Transaction Databases",
+    date: "August 2026",
+    tag: "Data Analytics",
+    summary: "Techniques for index tuning, execution plan evaluation, and eliminating bottleneck queries in PostgreSQL.",
+    slug: "sql-query-optimization"
+  }
+];
+---
+
+<html lang="en" data-theme="cyber" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Technical Articles & Case Studies | Md Shoyeb Rabbi</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem('site-theme') || 'cyber';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    <style is:global>
+      :root[data-theme="cyber"] {
+        --bg-main: #030712;
+        --card-bg: rgba(15, 23, 42, 0.7);
+        --card-border: rgba(6, 182, 212, 0.3);
+        --accent: #06b6d4;
+        --text-primary: #ffffff;
+      }
+      :root[data-theme="sunset"] {
+        --bg-main: #0c0507;
+        --card-bg: rgba(26, 11, 16, 0.7);
+        --card-border: rgba(249, 115, 22, 0.35);
+        --accent: #f97316;
+        --text-primary: #fff1f2;
+      }
+      :root[data-theme="matrix"] {
+        --bg-main: #020f08;
+        --card-bg: rgba(5, 28, 17, 0.7);
+        --card-border: rgba(16, 185, 129, 0.35);
+        --accent: #10b981;
+        --text-primary: #f0fdf4;
+      }
+      :root[data-theme="light"] {
+        --bg-main: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --card-border: rgba(203, 213, 225, 0.9);
+        --accent: #0284c7;
+        --text-primary: #0f172a;
+      }
+      body {
+        background-color: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+      }
+      .theme-card {
+        background-color: var(--card-bg) !important;
+        border-color: var(--card-border) !important;
+      }
+      .theme-accent-text {
+        color: var(--accent) !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen relative overflow-x-hidden">
+    <Navbar client:only="react" />
+    <main class="pt-32 pb-24 px-6 max-w-5xl mx-auto">
+      <div className="text-center mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest theme-accent-text mb-2 inline-block">
+          Technical Writing
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
+          Articles & <span class="theme-accent-text">Case Studies</span>
+        </h1>
+        <p class="text-gray-400 mt-3 text-sm md:text-base">
+          Engineering notes on systems administration, network protocols, and data modeling.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6">
+        {articles.map((art) => (
+          <article class="p-8 rounded-3xl theme-card border backdrop-blur-xl shadow-md hover:border-current transition-all">
+            <div class="flex justify-between items-center text-xs text-gray-400 mb-2">
+              <span class="px-3 py-1 rounded-full bg-current/10 theme-accent-text font-semibold border border-current/20">
+                {art.tag}
+              </span>
+              <span class="font-mono">{art.date}</span>
+            </div>
+            <h2 class="text-2xl font-bold mt-3 group-hover:opacity-85 transition-opacity">
+              {art.title}
+            </h2>
+            <p class="text-sm text-gray-400 mt-3 leading-relaxed">
+              {art.summary}
+            </p>
+            <div class="mt-6 pt-4 border-t border-gray-800 flex justify-end">
+              <span class="text-xs font-bold theme-accent-text inline-flex items-center gap-1 cursor-pointer">
+                Read Full Case Study ↗
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+    <Footer client:load />
+  </body>
+</html>

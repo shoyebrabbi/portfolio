@@ -1,0 +1,138 @@
+﻿---
+import Navbar from '../components/Navbar';
+import Hero from '../components/Hero';
+import ExperienceEducation from '../components/ExperienceEducation';
+import Projects from '../components/Projects';
+import Certificates from '../components/Certificates';
+import Footer from '../components/Footer';
+---
+
+<html lang="en" data-theme="cyber" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Md Shoyeb Rabbi | Data Analyst & IT Systems Specialist</title>
+    
+    <script is:inline>
+      const savedTheme = localStorage.getItem('site-theme') || 'cyber';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+
+    <style is:global>
+      html.lenis, html.lenis body { height: auto; }
+      .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+      /* BOLD & DRAMATIC 4-THEME ENGINE */
+      
+      /* 1. NEON CYBER (Electric Cyan & Blue) */
+      :root[data-theme="cyber"] {
+        --bg-main: #030712;
+        --card-bg: rgba(15, 23, 42, 0.7);
+        --card-border: rgba(6, 182, 212, 0.3);
+        --accent: #06b6d4;
+        --accent-hover: #22d3ee;
+        --accent-glow: rgba(6, 182, 212, 0.5);
+        --accent-gradient: linear-gradient(135deg, #06b6d4, #3b82f6);
+        --btn-text: #030712;
+        --text-primary: #ffffff;
+        --text-muted: #94a3b8;
+      }
+
+      /* 2. SUNSET CRIMSON (Fire Orange & Ember Red) */
+      :root[data-theme="sunset"] {
+        --bg-main: #0c0507;
+        --card-bg: rgba(26, 11, 16, 0.7);
+        --card-border: rgba(249, 115, 22, 0.35);
+        --accent: #f97316;
+        --accent-hover: #fb923c;
+        --accent-glow: rgba(249, 115, 22, 0.55);
+        --accent-gradient: linear-gradient(135deg, #f97316, #ef4444);
+        --btn-text: #050203;
+        --text-primary: #fff1f2;
+        --text-muted: #fda4af;
+      }
+
+      /* 3. MATRIX HACKER (Emerald & Neon Lime) */
+      :root[data-theme="matrix"] {
+        --bg-main: #020f08;
+        --card-bg: rgba(5, 28, 17, 0.7);
+        --card-border: rgba(16, 185, 129, 0.35);
+        --accent: #10b981;
+        --accent-hover: #34d399;
+        --accent-glow: rgba(16, 185, 129, 0.55);
+        --accent-gradient: linear-gradient(135deg, #10b981, #84cc16);
+        --btn-text: #020f08;
+        --text-primary: #f0fdf4;
+        --text-muted: #86efac;
+      }
+
+      /* 4. CRYSTAL DAYLIGHT (Ice White & Cobalt Blue) */
+      :root[data-theme="light"] {
+        --bg-main: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.95);
+        --card-border: rgba(203, 213, 225, 0.9);
+        --accent: #0284c7;
+        --accent-hover: #0369a1;
+        --accent-glow: rgba(2, 132, 199, 0.3);
+        --accent-gradient: linear-gradient(135deg, #0284c7, #2563eb);
+        --btn-text: #ffffff;
+        --text-primary: #0f172a;
+        --text-muted: #475569;
+      }
+
+      body {
+        background-color: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+        transition: background-color 0.35s ease, color 0.35s ease;
+      }
+
+      .theme-btn {
+        background: var(--accent-gradient) !important;
+        color: var(--btn-text) !important;
+        box-shadow: 0 0 25px var(--accent-glow) !important;
+      }
+      .theme-btn:hover {
+        box-shadow: 0 0 40px var(--accent-glow) !important;
+      }
+      .theme-accent-text {
+        color: var(--accent) !important;
+      }
+      .theme-border {
+        border-color: var(--card-border) !important;
+      }
+      .theme-card {
+        background-color: var(--card-bg) !important;
+        border-color: var(--card-border) !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen relative overflow-x-hidden">
+    <Navbar client:only="react" />
+    <main class="relative z-10 flex flex-col gap-12 md:gap-20">
+      <Hero client:load />
+      <ExperienceEducation client:load />
+      <Projects client:load />
+      <Certificates client:load />
+    </main>
+    <Footer client:load />
+
+    <script>
+      import Lenis from 'lenis';
+      const lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    </script>
+  </body>
+</html>
