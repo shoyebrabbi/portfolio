@@ -1,8 +1,23 @@
 ﻿backend:
-  name: test-repo
+  name: github
+  repo: shoyebrabbi/shoyeb-portfolio
+  branch: main # আপনার গিটহাব ব্রাঞ্চের নাম যদি master হয়, তবে এখানে master লিখবেন
+
+site_url: https://shoyeb.cyou
+display_url: https://shoyeb.cyou
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
+
+collections:
+  - name: "site_content"
+    label: "Site Management (Zero-Code)"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "general_and_skills"
+# ... এরপর আপনার ফাইলের বাকি অংশ ঠিক আগের মতোই থাকবে
 
 collections:
   - name: "site_content"
