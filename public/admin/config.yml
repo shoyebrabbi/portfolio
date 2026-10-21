@@ -2,6 +2,8 @@
   name: github
   repo: shoyebrabbi/shoyeb-portfolio
   branch: main # আপনার গিটহাব ব্রাঞ্চের নাম যদি master হয়, তবে এখানে master লিখবেন
+base_url: https://shoyeb.cyou
+  auth_endpoint: api/auth
 
 site_url: https://shoyeb.cyou
 display_url: https://shoyeb.cyou
