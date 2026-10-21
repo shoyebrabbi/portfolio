@@ -1,4 +1,7 @@
-﻿backend:
+﻿import type { APIRoute } from 'astro';
+
+export const GET: APIRoute = async () => {
+  return new Response(`backend:
   name: test-repo
 
 media_folder: "public/uploads"
@@ -74,4 +77,9 @@ collections:
       - { label: "Publication Date", name: "date", widget: "datetime" }
       - { label: "Category / Tag", name: "tag", widget: "string" }
       - { label: "Summary / Overview", name: "summary", widget: "text" }
-      - { label: "Body (Markdown)", name: "body", widget: "markdown" }
+      - { label: "Body (Markdown)", name: "body", widget: "markdown" }`, {
+    headers: {
+      'Content-Type': 'text/yaml'
+    }
+  });
+};
