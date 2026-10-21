@@ -19,7 +19,7 @@ collections:
       - name: "general_and_skills"
 # ... এরপর আপনার ফাইলের বাকি অংশ ঠিক আগের মতোই থাকবে
 
-collections:
+
   - name: "site_content"
     label: "Site Management (Zero-Code)"
     delete: false
