@@ -3,22 +3,21 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio Management - Decap CMS</title>
+    <title>Portfolio Content Manager</title>
     <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <!-- Decap CMS Core Script -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
     <script>
-      // Netlify Identity-র লগইন সফল হলে রিফ্রেশ ও রিডাইরেক্ট হ্যান্ডলার
+      // Netlify সাইটের সাথে এক্সপ্লিসিট কানেকশন নিশ্চিত করা
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", function(user) {
-          if (!user) {
-            window.netlifyIdentity.on("login", function() {
-              document.location.reload();
-            });
-          }
+        window.netlifyIdentity.set('siteURL', 'https://shoyebrabbi-portfolio.netlify.app');
+
+        window.netlifyIdentity.on("login", function() {
+          document.location.reload();
         });
       }
     </script>
