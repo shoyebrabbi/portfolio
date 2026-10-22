@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import '../../styles/globals.css';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | Md Shoyeb Rabbi</title>
+    <meta name="description" content="Projects by Md Shoyeb Rabbi." />
+  </head>
+  <body class="antialiased">
+    <Navbar client:load />
+    <main class="mx-auto min-h-[70vh] max-w-7xl px-4 pb-20 pt-32 sm:px-6">
+      <header class="mb-12 border-b border-gray-200 pb-8 dark:border-gray-800">
+        <p class="theme-accent-text text-xs font-bold uppercase tracking-widest">Portfolio</p>
+        <h1 class="mt-3 text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl">Projects</h1>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+          Explore selected work across analytics, systems, and networking.
+        </p>
+      </header>
+      {projects.length > 0 ? (
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {projects.map((project) => (
+            <article class="theme-card rounded-2xl border p-6">
+              <p class="theme-accent-text text-xs font-bold uppercase">{project.data.badge}</p>
+              <h2 class="mt-3 text-xl font-bold text-gray-900 dark:text-white">
+                <a href={`/projects/${project.id.replace(/\.md$/, '')}`} class="hover:opacity-80">
+                  {project.data.title}
+                </a>
+              </h2>
+              <p class="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.data.description}</p>
+              <div class="mt-5 flex flex-wrap gap-2">
+                {project.data.tech.map((technology) => (
+                  <span class="rounded-md bg-gray-100 px-2.5 py-1 text-xs text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                    {technology}
+                  </span>
+                ))}
+              </div>
+              <a href={`/projects/${project.id.replace(/\.md$/, '')}`} class="mt-5 inline-flex text-sm font-semibold theme-accent-text">
+                View project <span aria-hidden="true" class="ml-1">-&gt;</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p class="text-gray-600 dark:text-gray-400">No projects have been published yet.</p>
+      )}
+    </main>
+    <Footer />
+  </body>
+</html>

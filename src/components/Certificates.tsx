@@ -1,12 +1,31 @@
 ﻿import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, X, Award, ShieldCheck, CheckCircle2, ArrowRight } from "lucide-react";
-import { certificates, type Certificate } from "../data/portfolioData";
+import type { Certificate } from "../data/portfolioData";
 
-export default function Certificates() {
+type CertificateData = Omit<Certificate, "image" | "link" | "verification"> & {
+  id: string;
+  image?: string | null;
+  link?: string | null;
+  verification?: string | null;
+};
+
+type CertificateLabels = {
+  certificatesEyebrow: string;
+  certificatesHeading: string;
+  certificatesDescription: string;
+};
+
+export default function Certificates({
+  certificates,
+  labels,
+}: {
+  certificates: CertificateData[];
+  labels: CertificateLabels;
+}) {
   const [isVaultOpen, setIsVaultOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
-  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+  const [selectedCert, setSelectedCert] = useState<CertificateData | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -19,7 +38,7 @@ export default function Certificates() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isVaultOpen, selectedCert]);
 
-  const categories = ["All", "AI & Cloud", "Data & Analytics", "Systems & Security", "Professional Skills"];
+  const categories = ["All", ...new Set(certificates.map((certificate) => certificate.category))];
 
   const filteredCerts = activeTab === "All" 
     ? certificates 
@@ -38,19 +57,19 @@ export default function Certificates() {
           <div className="text-center lg:text-left max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100/70 dark:bg-cyan-950/60 border border-cyan-300 dark:border-cyan-800/60 text-cyan-800 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
               <ShieldCheck className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-              <span>Certified Credential Vault</span>
+              <span>{labels.certificatesEyebrow}</span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              12 Verified Industry <span className="text-cyan-600 dark:text-cyan-400">Credentials</span>
+              {certificates.length} {labels.certificatesHeading}
             </h2>
 
             <p className="mt-3.5 text-xs sm:text-sm md:text-base text-slate-600 dark:text-gray-300 leading-relaxed font-normal">
-              Officially issued and verified by <strong className="text-slate-900 dark:text-white font-semibold">Google</strong>, <strong className="text-slate-900 dark:text-white font-semibold">Deloitte</strong>, <strong className="text-slate-900 dark:text-white font-semibold">Microsoft</strong>, <strong className="text-slate-900 dark:text-white font-semibold">CoursePe</strong>, and the <strong className="text-slate-900 dark:text-white font-semibold">HP Foundation</strong>.
+              {labels.certificatesDescription}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2 justify-center lg:justify-start">
-              {["Google Official", "Deloitte Job Sim", "Microsoft Certified", "ISO 9001:2015", "HP LIFE Foundation"].map((badge, idx) => (
+              {[...new Set(certificates.map((certificate) => certificate.badge))].slice(0, 5).map((badge, idx) => (
                 <span
                   key={idx}
                   className="text-xs px-3 py-1.5 rounded-xl bg-slate-100/90 dark:bg-gray-800/70 text-slate-700 dark:text-gray-300 font-medium border border-slate-200/80 dark:border-gray-700/60 shadow-sm"
@@ -68,7 +87,7 @@ export default function Certificates() {
               className="theme-btn relative inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl font-extrabold text-sm sm:text-base tracking-wide transition-all hover:scale-[1.03] active:scale-[0.98] cursor-pointer group/btn w-full sm:w-auto"
             >
               <Award className="w-5 h-5 stroke-[2.5]" />
-              <span>View All 12 Certificates</span>
+              <span>View All {certificates.length} Certificates</span>
               <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1.5 transition-transform duration-300 stroke-[2.5]" />
             </button>
           </div>

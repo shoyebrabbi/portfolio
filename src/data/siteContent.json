@@ -4,26 +4,28 @@
     "name": "Md Shoyeb Rabbi",
     "role": "Data Analyst & IT Systems Specialist",
     "bio": "Specializing in Data Analytics (SQL, Power BI, Python), Linux Systems, and Enterprise Networking (MikroTik, CCNA). Dedicated to delivering actionable intelligence and robust tech infrastructure.",
+    "availabilityLabel": "Available for Remote & Technical Roles",
     "email": "hello@shoyebrabbi.com",
     "phone": "+8801824422687",
     "whatsappUrl": "https://wa.me/8801824422687",
     "linkedinUrl": "https://linkedin.com",
     "githubUrl": "https://github.com",
-    "facebookUrl": "https://facebook.com"
+    "facebookUrl": "https://facebook.com",
+    "profileImage": "",
+    "cvFile": ""
   },
   "skills": [
-    {
-      "category": "Data Analytics & BI",
-      "items": ["SQL / PostgreSQL", "Power BI & DAX", "Excel & Power Query", "Python (Data)"]
-    },
-    {
-      "category": "Systems & Networking",
-      "items": ["Linux Server (Ubuntu/Debian)", "Windows Server", "MikroTik RouterOS", "Cisco CCNA Principles"]
-    },
-    {
-      "category": "Digital Tools & Operations",
-      "items": ["Blogger / CMS Setup", "Canva Visual Design", "Cybersecurity Basics", "Community Management"]
-    }
+    { "category": "Data Analytics & BI", "items": ["SQL / PostgreSQL", "Power BI & DAX", "Excel & Power Query", "Python (Data)"] },
+    { "category": "Systems & Networking", "items": ["Linux Server (Ubuntu/Debian)", "Windows Server", "MikroTik RouterOS", "Cisco CCNA Principles"] },
+    { "category": "Digital Tools & Operations", "items": ["Blogger / CMS Setup", "Canva Visual Design", "Cybersecurity Basics", "Community Management"] }
+  ],
+  "navigation": [
+    { "label": "About", "url": "/#about" },
+    { "label": "Experience", "url": "/#experience" },
+    { "label": "Projects", "url": "/#projects" },
+    { "label": "Certificates", "url": "/#certificates" },
+    { "label": "Blog", "url": "/blog" },
+    { "label": "Pages", "url": "/pages" }
   ],
   "experience": [
     {
@@ -37,13 +39,48 @@
       ]
     }
   ],
-  "education": {
-    "degree": "Bachelor of Science in Computer Science & Information Technology (BSc CSIT)",
-    "institution": "Southern University Bangladesh",
-    "period": "Graduated 2020",
-    "highlights": [
-      "Core focus: Database Management Systems (DBMS), Networking, Operating Systems, and System Analysis.",
-      "Completed Capstone Degree Project focused on Information Technology."
-    ]
-  }
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science & Information Technology (BSc CSIT)",
+      "institution": "Southern University Bangladesh",
+      "period": "Graduated 2020",
+      "highlights": [
+        "Core focus: Database Management Systems (DBMS), Networking, Operating Systems, and System Analysis.",
+        "Completed Capstone Degree Project focused on Information Technology."
+      ]
+    }
+  ],
+  "labels": {
+    "siteTitle": "Md Shoyeb Rabbi | Data Analyst & IT Systems Specialist",
+    "siteDescription": "Professional portfolio of Md Shoyeb Rabbi.",
+    "brandName": "SHOYEB.RABBI",
+    "hireButton": "Hire Me",
+    "connectHeading": "Let's Connect",
+    "connectAvailability": "Available for Technical & Remote Roles",
+    "emailLabel": "Official Email",
+    "networksLabel": "Professional Networks",
+    "sendEmailButton": "Send Direct Email",
+    "experienceHeading": "Professional Experience",
+    "educationHeading": "Academic Background",
+    "testimonialEyebrow": "Recommendations",
+    "testimonialHeading": "Professional Testimonials",
+    "cvDownloadLabel": "Download CV",
+    "cvRequestLabel": "Request CV",
+    "credentialsButton": "12 Verified Credentials",
+    "projectsEyebrow": "Engineering Portfolio",
+    "projectsHeading": "Featured Projects",
+    "projectsDescription": "Technical implementations in data intelligence, systems infrastructure & enterprise networking.",
+    "projectsArchiveLabel": "View All Projects",
+    "certificatesEyebrow": "Certified Credential Vault",
+    "certificatesHeading": "Verified Industry Credentials",
+    "certificatesDescription": "Officially issued and verified professional credentials.",
+    "footerContactLabel": "Reach out via:"
+  },
+  "homeSections": [
+    { "type": "hero", "enabled": true },
+    { "type": "experience", "enabled": true },
+    { "type": "projects", "enabled": true },
+    { "type": "certificates", "enabled": true },
+    { "type": "testimonials", "enabled": true }
+  ]
 }

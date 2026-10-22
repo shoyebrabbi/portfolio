@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from "react";
-import { Download, Palette, X, Check, Copy, ExternalLink, Send } from "lucide-react";
+import { Download, Mail, Palette, X, Check, Copy, ExternalLink, Send, Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import siteContent from "../data/siteContent.json";
 
@@ -11,15 +11,18 @@ const themes = [
 ];
 
 export default function Navbar() {
-  const { settings } = siteContent;
+  const { settings, navigation, labels } = siteContent;
   const [currentTheme, setCurrentTheme] = useState(settings.defaultTheme || "cyber");
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [isHireOpen, setIsHireOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("site-theme") || settings.defaultTheme || "cyber";
     setCurrentTheme(saved);
+    document.documentElement.setAttribute("data-theme", saved);
+    document.documentElement.classList.toggle("dark", saved !== "light");
   }, [settings.defaultTheme]);
 
   const changeTheme = (themeId: string) => {
@@ -43,26 +46,39 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-white/70 dark:bg-black/60 border-b border-gray-200/60 dark:border-gray-800/60">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="text-xl font-bold tracking-wider text-gray-900 dark:text-white">
-            SHOYEB<span className="theme-accent-text">.RABBI</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <a href="/" className="text-lg sm:text-xl font-bold tracking-wider text-gray-900 dark:text-white">
+            {labels.brandName.split(".").map((part, index) => (
+              <React.Fragment key={`${part}-${index}`}>
+                {index > 0 && "."}<span className={index > 0 ? "theme-accent-text" : undefined}>{part}</span>
+              </React.Fragment>
+            ))}
           </a>
           
           <div className="hidden md:flex space-x-7 text-sm font-medium text-gray-600 dark:text-gray-300">
-            <a href="/#about" className="hover:opacity-80 transition-colors">About</a>
-            <a href="/#experience" className="hover:opacity-80 transition-colors">Experience</a>
-            <a href="/#projects" className="hover:opacity-80 transition-colors">Projects</a>
-            <a href="/#certificates" className="hover:opacity-80 transition-colors">Certificates</a>
-            <a href="/blog" className="hover:opacity-80 transition-colors">Blog</a>
+            {navigation.map((item) => (
+              <a key={item.url} href={item.url} className="hover:opacity-80 transition-colors">{item.label}</a>
+            ))}
           </div>
 
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation"
+              className="md:hidden p-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200"
+            >
+              {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+
             {/* Theme Palette */}
             <div className="relative">
               <button
                 onClick={() => setIsPaletteOpen(!isPaletteOpen)}
                 aria-label="Theme Palette"
-                className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 hover:border-cyan-500 transition-all cursor-pointer shadow-sm flex items-center justify-center"
+                className="p-2 sm:p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 hover:border-cyan-500 transition-all cursor-pointer shadow-sm flex items-center justify-center"
               >
                 <Palette className="w-4 h-4 theme-accent-text" />
               </button>
@@ -108,26 +124,49 @@ export default function Navbar() {
 
             {/* CV */}
             <a
-              href="/Md_Shoyeb_Rabbi_CV.pdf"
-              download="Md_Shoyeb_Rabbi_CV.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={settings.cvFile || `mailto:${settings.email}?subject=CV%20Request`}
+              download={settings.cvFile ? "Md_Shoyeb_Rabbi_CV.pdf" : undefined}
               className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 hover:border-cyan-500 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all"
             >
-              <Download className="w-3.5 h-3.5" />
-              <span>CV</span>
+              {settings.cvFile ? <Download className="w-3.5 h-3.5" /> : <Mail className="w-3.5 h-3.5" />}
+              <span>{settings.cvFile ? labels.cvDownloadLabel : labels.cvRequestLabel}</span>
             </a>
 
             {/* Hire Me */}
             <button
               onClick={() => setIsHireOpen(true)}
-              className="theme-btn flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl font-bold text-xs sm:text-sm tracking-wide transition-all hover:-translate-y-0.5 cursor-pointer"
+              className="theme-btn flex items-center gap-2 px-3 sm:px-5 py-2 rounded-xl font-bold text-xs sm:text-sm tracking-wide transition-all hover:-translate-y-0.5 cursor-pointer"
             >
               <span className="w-2 h-2 rounded-full bg-current animate-ping"></span>
-              <span>Hire Me</span>
+              <span>{labels.hireButton}</span>
             </button>
           </div>
         </div>
+
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              id="mobile-navigation"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden overflow-hidden border-t border-gray-200/60 dark:border-gray-800/60 bg-white dark:bg-gray-950"
+            >
+              <div className="max-w-7xl mx-auto px-4 py-2 flex flex-col">
+                {navigation.map(({ label, url }) => (
+                  <a
+                    key={url}
+                    href={url}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="py-3 text-sm font-medium text-gray-700 dark:text-gray-200"
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hire Drawer */}
@@ -148,8 +187,8 @@ export default function Navbar() {
               <div>
                 <div className="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-gray-800">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Let's Connect</h3>
-                    <p className="text-xs text-gray-500 mt-1">Available for Technical & Remote Roles</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{labels.connectHeading}</h3>
+                    <p className="text-xs text-gray-500 mt-1">{labels.connectAvailability}</p>
                   </div>
                   <button
                     onClick={() => setIsHireOpen(false)}
@@ -182,7 +221,7 @@ export default function Navbar() {
 
                   <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 flex items-center justify-between">
                     <div>
-                      <div className="text-xs font-semibold text-gray-500 uppercase">Official Email</div>
+                      <div className="text-xs font-semibold text-gray-500 uppercase">{labels.emailLabel}</div>
                       <div className="text-sm font-bold text-gray-900 dark:text-white font-mono mt-0.5">
                         {settings.email}
                       </div>
@@ -199,7 +238,7 @@ export default function Navbar() {
 
                 <div className="mt-8">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-                    Professional Networks
+                    {labels.networksLabel}
                   </h4>
                   <div className="grid grid-cols-2 gap-3">
                     <a
@@ -248,7 +287,7 @@ export default function Navbar() {
                   className="theme-btn w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Direct Email</span>
+                  <span>{labels.sendEmailButton}</span>
                 </a>
               </div>
             </motion.div>

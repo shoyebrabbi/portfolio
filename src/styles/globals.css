@@ -1,0 +1,94 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --accent: #06b6d4;
+  --accent-glow: rgba(6, 182, 212, 0.28);
+  --accent-gradient: linear-gradient(135deg, #0891b2, #06b6d4);
+  --page-bg: #030712;
+  --surface: rgba(15, 23, 42, 0.72);
+  --surface-border: rgba(71, 85, 105, 0.5);
+  --scroll-track: #030712;
+  --scroll-thumb: #1e293b;
+}
+
+:root[data-theme="sunset"] {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.28);
+  --accent-gradient: linear-gradient(135deg, #ea580c, #ef4444);
+}
+
+:root[data-theme="matrix"] {
+  --accent: #10b981;
+  --accent-glow: rgba(16, 185, 129, 0.28);
+  --accent-gradient: linear-gradient(135deg, #059669, #84cc16);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --accent: #0284c7;
+  --accent-glow: rgba(2, 132, 199, 0.2);
+  --accent-gradient: linear-gradient(135deg, #0369a1, #0284c7);
+  --page-bg: #f3f7f8;
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-border: rgba(148, 163, 184, 0.4);
+  --scroll-track: #e2e8f0;
+  --scroll-thumb: #94a3b8;
+}
+
+body {
+  background-color: var(--page-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, var(--accent-glow) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(30, 58, 138, 0.12) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: #0f172a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+:root.dark body {
+  color: #f8fafc;
+}
+
+.theme-accent-text {
+  color: var(--accent);
+}
+
+.theme-card {
+  background-color: var(--surface);
+  border-color: var(--surface-border);
+}
+
+.theme-btn {
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.theme-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* কাস্টম প্রিমিয়াম স্ক্রলবার */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
+}
+
+/* স্মুথ সিলেকশন কালার */
+::selection {
+  background-color: #06b6d4;
+  color: #ffffff;
+}

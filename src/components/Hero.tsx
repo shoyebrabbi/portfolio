@@ -1,9 +1,9 @@
 ﻿import React from "react";
 import { motion } from "framer-motion";
 import { 
-  Download, Award, Database, Network, 
+  Download, Mail, Award, Database, Network, 
   BarChart2, FileSpreadsheet, Binary, 
-  Server, Shield, Radio, Palette, Share2, Layers, CheckCircle2
+  Server, Shield, Radio, Palette, Share2, Layers, CheckCircle2, UserRound
 } from "lucide-react";
 import siteContent from "../data/siteContent.json";
 
@@ -29,6 +29,7 @@ const getIconForSkill = (skillName: string) => {
 
 export default function Hero() {
   const { settings, skills } = siteContent;
+  const [isProfileImageLoaded, setIsProfileImageLoaded] = React.useState(false);
 
   return (
     <section id="about" className="pt-28 md:pt-36 pb-16 px-6 max-w-7xl mx-auto relative">
@@ -46,17 +47,18 @@ export default function Hero() {
           <div className="relative w-full max-w-[280px] sm:max-w-sm aspect-[4/5] rounded-[2rem] p-3 theme-card backdrop-blur-2xl border shadow-2xl group">
             <div className="w-full h-full rounded-[1.4rem] overflow-hidden bg-gray-100 dark:bg-gray-950 relative flex items-center justify-center border border-gray-200/60 dark:border-gray-800/80">
               <img
-                src="/profile.webp"
+                src={settings.profileImage || "/profile.webp"}
                 alt={settings.name}
-                className="w-full h-full object-cover object-top transition duration-700 group-hover:scale-105"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = "none";
-                }}
+                className={`relative z-10 w-full h-full object-cover object-top transition duration-700 group-hover:scale-105 ${isProfileImageLoaded ? "" : "hidden"}`}
+                onLoad={() => setIsProfileImageLoaded(true)}
               />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 dark:text-gray-600 text-xs font-semibold uppercase tracking-wider p-4 text-center -z-10">
-                <span className="text-3xl mb-1">👤</span>
-                profile.webp
-              </div>
+              {!isProfileImageLoaded && (
+                <div className="absolute inset-0 z-0 flex flex-col items-center justify-center gap-3 bg-gray-100 p-4 text-center text-gray-500 dark:bg-gray-950 dark:text-gray-400">
+                  <UserRound className="h-12 w-12 theme-accent-text" strokeWidth={1.25} />
+                  <span className="text-sm font-semibold">{settings.name}</span>
+                  <span className="text-xs">Portrait photo</span>
+                </div>
+              )}
             </div>
 
             {/* Floating Badge 1 */}
@@ -100,7 +102,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full theme-card border theme-accent-text text-xs font-semibold uppercase tracking-wider mb-5 shadow-sm"
           >
             <span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
-            Available for Remote & Technical Roles
+            {settings.availabilityLabel}
           </motion.div>
 
           <motion.h1
@@ -141,14 +143,12 @@ export default function Hero() {
             className="mt-8 flex flex-wrap gap-3.5 justify-center lg:justify-start items-center w-full sm:w-auto"
           >
             <a
-              href="/Md_Shoyeb_Rabbi_CV.pdf"
-              download="Md_Shoyeb_Rabbi_CV.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={settings.cvFile || `mailto:${settings.email}?subject=CV%20Request`}
+              download={settings.cvFile ? "Md_Shoyeb_Rabbi_CV.pdf" : undefined}
               className="theme-btn flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm tracking-wide transition-all hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto"
             >
-              <Download className="w-4 h-4 stroke-[2.5]" />
-              <span>Download CV</span>
+              {settings.cvFile ? <Download className="w-4 h-4 stroke-[2.5]" /> : <Mail className="w-4 h-4 stroke-[2.5]" />}
+              <span>{settings.cvFile ? siteContent.labels.cvDownloadLabel : siteContent.labels.cvRequestLabel}</span>
             </a>
 
             <a
@@ -156,7 +156,7 @@ export default function Hero() {
               className="theme-card flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border text-gray-800 dark:text-gray-200 font-semibold text-sm transition-all shadow-sm hover:-translate-y-0.5 w-full sm:w-auto"
             >
               <Award className="w-4 h-4 theme-accent-text stroke-[2]" />
-              <span>12 Verified Credentials</span>
+              <span>{siteContent.labels.credentialsButton}</span>
             </a>
 
             <a

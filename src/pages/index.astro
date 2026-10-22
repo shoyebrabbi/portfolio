@@ -1,0 +1,63 @@
+﻿---
+import { getCollection } from 'astro:content';
+import '../styles/globals.css';
+
+import Navbar from '../components/Navbar';
+import Hero from '../components/Hero';
+import ExperienceEducation from '../components/ExperienceEducation';
+import Projects from '../components/Projects';
+import Certificates from '../components/Certificates';
+import Testimonials from '../components/Testimonials';
+import Footer from '../components/Footer';
+import siteContent from '../data/siteContent.json';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(({ id, data }) => ({ id, ...data }));
+const featuredProjects = projects.filter((project) => project.featured);
+const certificates = (await getCollection('certificates'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(({ id, data }) => ({ id, ...data }));
+const testimonials = await getCollection('testimonials');
+const { settings, labels } = siteContent;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{labels.siteTitle}</title>
+    <meta name="description" content={labels.siteDescription} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body class="antialiased">
+    <Navbar client:load />
+    
+    <!-- ম্যাক্সিমাম উইডথ এবং পারফেক্ট প্যাডিং -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-32 relative z-10">
+      {siteContent.homeSections.filter((section) => section.enabled).map((section) => (
+        section.type === 'hero' ? <Hero client:load /> :
+        section.type === 'experience' ? <ExperienceEducation experience={siteContent.experience} education={siteContent.education} client:load /> :
+        section.type === 'projects' ? <Projects projects={featuredProjects} labels={labels} client:load /> :
+        section.type === 'certificates' ? <Certificates certificates={certificates} labels={labels} client:load /> :
+        section.type === 'testimonials' ? <Testimonials testimonials={testimonials} client:load /> : null
+      ))}
+    </main>
+
+    <Footer client:load />
+
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

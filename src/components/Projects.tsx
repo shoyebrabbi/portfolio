@@ -1,21 +1,43 @@
 ﻿import React from "react";
 import { motion } from "framer-motion";
 import { Github, Terminal, ArrowUpRight } from "lucide-react";
-import { projects } from "../data/portfolioData";
 
-export default function Projects() {
+type Project = {
+  id: string;
+  title: string;
+  badge: string;
+  description: string;
+  tech: string[];
+  liveUrl?: string | null;
+  githubUrl?: string | null;
+};
+
+type ProjectLabels = {
+  projectsEyebrow: string;
+  projectsHeading: string;
+  projectsDescription: string;
+  projectsArchiveLabel: string;
+};
+
+export default function Projects({ projects, labels }: { projects: Project[]; labels: ProjectLabels }) {
   return (
     <section id="projects" className="py-12 md:py-16 px-6 max-w-7xl mx-auto w-full relative">
       <div className="text-center mb-14">
         <span className="text-xs font-bold uppercase tracking-widest theme-accent-text mb-2 inline-block">
-          Engineering Portfolio
+          {labels.projectsEyebrow}
         </span>
         <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-          Featured <span className="theme-accent-text">Projects</span>
+          {labels.projectsHeading}
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mt-3 text-sm md:text-base max-w-2xl mx-auto">
-          Technical implementations in data intelligence, systems infrastructure & enterprise networking.
+          {labels.projectsDescription}
         </p>
+      </div>
+
+      <div className="mb-6 flex justify-end">
+        <a href="/projects" className="text-sm font-semibold theme-accent-text hover:underline">
+          {labels.projectsArchiveLabel} <span aria-hidden="true">-&gt;</span>
+        </a>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -45,7 +67,9 @@ export default function Projects() {
               </div>
 
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white group-hover:opacity-85 transition-opacity">
-                {proj.title}
+                <a href={`/projects/${proj.id.replace(/\.md$/, "")}`} className="hover:text-cyan-600 dark:hover:text-cyan-400">
+                  {proj.title}
+                </a>
               </h3>
               
               <p className="text-sm text-gray-600 dark:text-gray-300 mt-3 leading-relaxed">
@@ -66,7 +90,7 @@ export default function Projects() {
               </div>
 
               <div className="flex items-center gap-2.5">
-                {proj.githubUrl && (
+                {proj.githubUrl && proj.githubUrl !== "#" && (
                   <a
                     href={proj.githubUrl}
                     className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-cyan-500 transition-colors"
@@ -75,7 +99,7 @@ export default function Projects() {
                     <Github className="w-4 h-4" />
                   </a>
                 )}
-                {proj.liveUrl && (
+                {proj.liveUrl && proj.liveUrl !== "#" && (
                   <a
                     href={proj.liveUrl}
                     className="theme-btn p-2.5 rounded-xl transition-all shadow-sm hover:scale-105"

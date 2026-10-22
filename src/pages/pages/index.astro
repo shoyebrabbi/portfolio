@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import '../../styles/globals.css';
+
+const pages = (await getCollection('pages')).filter((page) => page.data.showInPagesIndex);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pages | Md Shoyeb Rabbi</title>
+    <meta name="description" content="Additional pages by Md Shoyeb Rabbi." />
+  </head>
+  <body class="antialiased">
+    <Navbar client:load />
+    <main class="mx-auto min-h-[70vh] max-w-5xl px-4 pb-20 pt-32 sm:px-6">
+      <header class="mb-10 border-b border-gray-200 pb-8 dark:border-gray-800">
+        <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white">Pages</h1>
+        <p class="mt-3 text-gray-600 dark:text-gray-400">Additional information and resources.</p>
+      </header>
+      {pages.length > 0 ? (
+        <ul class="divide-y divide-gray-200 dark:divide-gray-800">
+          {pages.map((page) => (
+            <li class="py-5">
+              <a href={`/pages/${page.id.replace(/\.md$/, '')}`} class="text-lg font-bold text-gray-900 hover:text-cyan-600 dark:text-white dark:hover:text-cyan-400">
+                {page.data.title}
+              </a>
+              {page.data.description && <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{page.data.description}</p>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-gray-600 dark:text-gray-400">No additional pages have been published yet.</p>
+      )}
+    </main>
+    <Footer />
+  </body>
+</html>

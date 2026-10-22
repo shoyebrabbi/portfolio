@@ -1,0 +1,98 @@
+---
+import { getCollection, render } from 'astro:content';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import '../../styles/globals.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blogs');
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.md$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const publishedDate = new Date(post.data.date);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{post.data.title} | Md Shoyeb Rabbi</title>
+    <meta name="description" content={post.data.summary} />
+  </head>
+  <body class="antialiased">
+    <Navbar client:load />
+    <main class="mx-auto min-h-[70vh] max-w-3xl px-4 pb-20 pt-32 sm:px-6">
+      <a href="/blog" class="text-sm font-semibold theme-accent-text">&lt;- All articles</a>
+      <article class="mt-8">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+          <time datetime={publishedDate.toISOString()}>
+            {publishedDate.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+          <span aria-hidden="true">/</span>
+          <span class="theme-accent-text font-semibold">{post.data.tag}</span>
+        </div>
+        <h1 class="mt-4 text-3xl font-extrabold leading-tight text-gray-900 dark:text-white sm:text-5xl">
+          {post.data.title}
+        </h1>
+        {post.data.image && <img src={post.data.image} alt={post.data.title} class="mt-7 max-h-[65vh] w-full rounded-xl object-cover" />}
+        <p class="mt-5 border-b border-gray-200 pb-8 text-lg leading-relaxed text-gray-600 dark:border-gray-800 dark:text-gray-400">
+          {post.data.summary}
+        </p>
+        <div class="blog-content mt-8 text-gray-700 dark:text-gray-300">
+          <Content />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .blog-content {
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+  }
+
+  .blog-content :global(p) {
+    margin: 1.25rem 0;
+  }
+
+  .blog-content :global(h2),
+  .blog-content :global(h3) {
+    margin: 2rem 0 0.75rem;
+    color: #0f172a;
+    font-weight: 700;
+  }
+
+  .blog-content :global(h2) {
+    font-size: 1.5rem;
+  }
+
+  .blog-content :global(h3) {
+    font-size: 1.25rem;
+  }
+
+  .blog-content :global(ul),
+  .blog-content :global(ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+
+  .blog-content :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  :global(.dark) .blog-content :global(h2),
+  :global(.dark) .blog-content :global(h3) {
+    color: #f8fafc;
+  }
+</style>

@@ -13,7 +13,7 @@ collections:
       preview: false
     files:
       - name: "general_and_skills"
-        label: "Profile, Themes & Skills"
+        label: "Profile, Skills & Navigation"
         file: "src/data/siteContent.json"
         fields:
           - label: "Profile & Settings"
@@ -24,12 +24,84 @@ collections:
               - { label: "Full Name", name: "name", widget: "string" }
               - { label: "Professional Title", name: "role", widget: "string" }
               - { label: "Short Bio", name: "bio", widget: "text" }
+              - { label: "Availability Label", name: "availabilityLabel", widget: "string" }
               - { label: "Official Email", name: "email", widget: "string" }
               - { label: "Phone / WhatsApp Display", name: "phone", widget: "string" }
               - { label: "WhatsApp Direct Link", name: "whatsappUrl", widget: "string" }
               - { label: "LinkedIn URL", name: "linkedinUrl", widget: "string" }
               - { label: "GitHub URL", name: "githubUrl", widget: "string" }
               - { label: "Facebook URL", name: "facebookUrl", widget: "string" }
+              - { label: "Profile Photo", name: "profileImage", widget: "image", required: false }
+              - { label: "CV PDF", name: "cvFile", widget: "file", required: false, allow_multiple: false }
+
+          - label: "Navigation Links"
+            name: "navigation"
+            widget: "list"
+            fields:
+              - { label: "Link Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+
+          - label: "Homepage Sections (drag to reorder)"
+            name: "homeSections"
+            widget: "list"
+            fields:
+              - label: "Section"
+                name: "type"
+                widget: "select"
+                options:
+                  - { label: "Hero & Profile", value: "hero" }
+                  - { label: "Experience & Education", value: "experience" }
+                  - { label: "Projects", value: "projects" }
+                  - { label: "Certificates", value: "certificates" }
+                  - { label: "Testimonials", value: "testimonials" }
+              - { label: "Visible", name: "enabled", widget: "boolean", default: true }
+
+          - label: "Experience"
+            name: "experience"
+            widget: "list"
+            fields:
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "Company", name: "company", widget: "string" }
+              - { label: "Period", name: "period", widget: "string" }
+              - { label: "Highlights", name: "description", widget: "list" }
+
+          - label: "Education"
+            name: "education"
+            widget: "list"
+            fields:
+              - { label: "Degree", name: "degree", widget: "string" }
+              - { label: "Institution", name: "institution", widget: "string" }
+              - { label: "Period", name: "period", widget: "string" }
+              - { label: "Highlights", name: "highlights", widget: "list" }
+
+          - label: "Homepage Labels"
+            name: "labels"
+            widget: "object"
+            fields:
+              - { label: "Browser Page Title", name: "siteTitle", widget: "string" }
+              - { label: "Search Description", name: "siteDescription", widget: "text" }
+              - { label: "Brand Name", name: "brandName", widget: "string" }
+              - { label: "Hire Button", name: "hireButton", widget: "string" }
+              - { label: "Contact Panel Heading", name: "connectHeading", widget: "string" }
+              - { label: "Contact Availability Text", name: "connectAvailability", widget: "string" }
+              - { label: "Email Label", name: "emailLabel", widget: "string" }
+              - { label: "Social Links Heading", name: "networksLabel", widget: "string" }
+              - { label: "Email Button", name: "sendEmailButton", widget: "string" }
+              - { label: "Experience Heading", name: "experienceHeading", widget: "string" }
+              - { label: "Education Heading", name: "educationHeading", widget: "string" }
+              - { label: "Testimonials Eyebrow", name: "testimonialEyebrow", widget: "string" }
+              - { label: "Testimonials Heading", name: "testimonialHeading", widget: "string" }
+              - { label: "Download CV Button", name: "cvDownloadLabel", widget: "string" }
+              - { label: "Request CV Button", name: "cvRequestLabel", widget: "string" }
+              - { label: "Credentials Button", name: "credentialsButton", widget: "string" }
+              - { label: "Projects Eyebrow", name: "projectsEyebrow", widget: "string" }
+              - { label: "Projects Heading", name: "projectsHeading", widget: "string" }
+              - { label: "Projects Description", name: "projectsDescription", widget: "text" }
+              - { label: "All Projects Link", name: "projectsArchiveLabel", widget: "string" }
+              - { label: "Certificates Eyebrow", name: "certificatesEyebrow", widget: "string" }
+              - { label: "Certificates Heading", name: "certificatesHeading", widget: "string" }
+              - { label: "Certificates Description", name: "certificatesDescription", widget: "text" }
+              - { label: "Contact Footer Label", name: "footerContactLabel", widget: "string" }
 
           - label: "Technical Skills Categories"
             name: "skills"
@@ -39,40 +111,91 @@ collections:
               - { label: "Skills in this Category", name: "items", widget: "list" }
 
   - name: "projects"
-    label: "Featured Projects"
+    label: "Projects"
     folder: "src/content/projects"
     create: true
+    delete: true
     slug: "{{slug}}"
     fields:
       - { label: "Project Title", name: "title", widget: "string" }
       - { label: "Badge / Category", name: "badge", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Technologies (List)", name: "tech", widget: "list" }
+      - { label: "Project Image", name: "image", widget: "image", required: false }
       - { label: "Live Demo URL", name: "liveUrl", widget: "string", required: false }
       - { label: "GitHub Source URL", name: "githubUrl", widget: "string", required: false }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 100 }
+      - { label: "Show on Homepage", name: "featured", widget: "boolean", default: true }
+      - { label: "Project Details / Case Study", name: "body", widget: "markdown", required: false }
 
   - name: "certificates"
     label: "Credentials & Certificates"
     folder: "src/content/certificates"
     create: true
+    delete: true
     slug: "{{slug}}"
     fields:
       - { label: "Certificate Title", name: "title", widget: "string" }
       - { label: "Issuer", name: "issuer", widget: "string" }
       - { label: "Badge / Level", name: "badge", widget: "string" }
-      - { label: "Category", name: "category", widget: "select", options: ["AI & Cloud", "Data & Analytics", "Systems & Security", "Professional Skills"] }
+      - { label: "Category", name: "category", widget: "select", options: ["AI & Cloud", "Data & Analytics", "Systems & Security", "Professional Skills", "Business & Strategy"] }
       - { label: "Issue Date", name: "date", widget: "string" }
       - { label: "Verification Code / ID", name: "verification", widget: "string", required: false }
       - { label: "Official Verification URL", name: "link", widget: "string", required: false }
+      - { label: "Certificate Image", name: "image", widget: "image", required: false }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 100 }
 
   - name: "blogs"
     label: "Articles & Case Studies"
     folder: "src/content/blogs"
     create: true
+    delete: true
     slug: "{{slug}}"
     fields:
       - { label: "Article Title", name: "title", widget: "string" }
       - { label: "Publication Date", name: "date", widget: "datetime" }
       - { label: "Category / Tag", name: "tag", widget: "string" }
       - { label: "Summary / Overview", name: "summary", widget: "text" }
+      - { label: "Cover Image", name: "image", widget: "image", required: false }
       - { label: "Body (Markdown)", name: "body", widget: "markdown" }
+
+  - name: "testimonials"
+    label: "Testimonials"
+    folder: "src/content/testimonials"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role", name: "role", widget: "string" }
+      - { label: "Quote", name: "quote", widget: "text" }
+
+  - name: "pages"
+    label: "Pages & Page Sections"
+    folder: "src/content/pages"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Page Title", name: "title", widget: "string" }
+      - { label: "Meta Description", name: "description", widget: "text", required: false }
+      - { label: "Show in Pages Directory", name: "showInPagesIndex", widget: "boolean", default: true }
+      - label: "Page Sections (drag to reorder)"
+        name: "sections"
+        widget: "list"
+        fields:
+          - label: "Section Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Text", value: "text" }
+              - { label: "Image", value: "image" }
+              - { label: "Project Collection", value: "projects" }
+              - { label: "Certificate Collection", value: "certificates" }
+              - { label: "Call to Action", value: "cta" }
+          - { label: "Heading", name: "heading", widget: "string", required: false }
+          - { label: "Text", name: "body", widget: "text", required: false }
+          - { label: "Image", name: "image", widget: "image", required: false }
+          - { label: "Image Alt Text", name: "imageAlt", widget: "string", required: false }
+          - { label: "Button Label", name: "buttonLabel", widget: "string", required: false }
+          - { label: "Button URL", name: "buttonUrl", widget: "string", required: false }
