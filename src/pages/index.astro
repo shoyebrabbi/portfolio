@@ -12,14 +12,19 @@ import Footer from '../components/Footer';
 import siteContent from '../data/siteContent.json';
 
 const projects = (await getCollection('projects'))
+  .filter((project) => project.data.visible)
   .sort((a, b) => a.data.order - b.data.order)
   .map(({ id, data }) => ({ id, ...data }));
 const featuredProjects = projects.filter((project) => project.featured);
 const certificates = (await getCollection('certificates'))
+  .filter((certificate) => certificate.data.visible)
   .sort((a, b) => a.data.order - b.data.order)
   .map(({ id, data }) => ({ id, ...data }));
-const testimonials = await getCollection('testimonials');
 const { settings, labels } = siteContent;
+const featuredCertificates = certificates
+  .filter((certificate) => certificate.featured)
+  .slice(0, settings.featuredCertificateLimit);
+const testimonials = (await getCollection('testimonials')).filter((testimonial) => testimonial.data.visible);
 ---
 
 <!doctype html>
@@ -39,9 +44,9 @@ const { settings, labels } = siteContent;
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-32 relative z-10">
       {siteContent.homeSections.filter((section) => section.enabled).map((section) => (
         section.type === 'hero' ? <Hero client:load /> :
-        section.type === 'experience' ? <ExperienceEducation experience={siteContent.experience} education={siteContent.education} client:load /> :
+        section.type === 'experience' ? <ExperienceEducation experience={siteContent.experience.filter((item) => item.visible)} education={siteContent.education.filter((item) => item.visible)} client:load /> :
         section.type === 'projects' ? <Projects projects={featuredProjects} labels={labels} client:load /> :
-        section.type === 'certificates' ? <Certificates certificates={certificates} labels={labels} client:load /> :
+        section.type === 'certificates' ? <Certificates certificates={certificates} featuredCertificates={featuredCertificates} labels={labels} client:load /> :
         section.type === 'testimonials' ? <Testimonials testimonials={testimonials} client:load /> : null
       ))}
     </main>

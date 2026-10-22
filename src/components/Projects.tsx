@@ -8,6 +8,7 @@ type Project = {
   badge: string;
   description: string;
   tech: string[];
+  attachments?: { label: string; file: string }[];
   liveUrl?: string | null;
   githubUrl?: string | null;
 };

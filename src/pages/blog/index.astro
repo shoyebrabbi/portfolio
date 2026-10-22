@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import '../../styles/globals.css';
 
-const posts = (await getCollection('blogs')).sort(
+const posts = (await getCollection('blogs')).filter((post) => post.data.visible).sort(
   (a, b) => Date.parse(b.data.date) - Date.parse(a.data.date),
 );
 ---

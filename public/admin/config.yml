@@ -33,7 +33,7 @@ collections:
               - { label: "Facebook URL", name: "facebookUrl", widget: "string" }
               - { label: "Profile Photo", name: "profileImage", widget: "image", required: false }
               - { label: "CV PDF", name: "cvFile", widget: "file", required: false, allow_multiple: false }
-
+              - { label: "Featured Certificates on Homepage", name: "featuredCertificateLimit", widget: "number", value_type: "int", min: 0, max: 50, default: 3 }
           - label: "Navigation Links"
             name: "navigation"
             widget: "list"
@@ -64,7 +64,7 @@ collections:
               - { label: "Company", name: "company", widget: "string" }
               - { label: "Period", name: "period", widget: "string" }
               - { label: "Highlights", name: "description", widget: "list" }
-
+              - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
           - label: "Education"
             name: "education"
             widget: "list"
@@ -73,7 +73,7 @@ collections:
               - { label: "Institution", name: "institution", widget: "string" }
               - { label: "Period", name: "period", widget: "string" }
               - { label: "Highlights", name: "highlights", widget: "list" }
-
+              - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
           - label: "Homepage Labels"
             name: "labels"
             widget: "object"
@@ -101,6 +101,8 @@ collections:
               - { label: "Certificates Eyebrow", name: "certificatesEyebrow", widget: "string" }
               - { label: "Certificates Heading", name: "certificatesHeading", widget: "string" }
               - { label: "Certificates Description", name: "certificatesDescription", widget: "text" }
+              - { label: "Selected Certificates Heading", name: "featuredCredentialsHeading", widget: "string" }
+              - { label: "All Certificates Link", name: "certificatesSeeAllLabel", widget: "string" }
               - { label: "Contact Footer Label", name: "footerContactLabel", widget: "string" }
 
           - label: "Technical Skills Categories"
@@ -109,6 +111,7 @@ collections:
             fields:
               - { label: "Category Name", name: "category", widget: "string" }
               - { label: "Skills in this Category", name: "items", widget: "list" }
+              - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
 
   - name: "projects"
     label: "Projects"
@@ -126,7 +129,15 @@ collections:
       - { label: "GitHub Source URL", name: "githubUrl", widget: "string", required: false }
       - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 100 }
       - { label: "Show on Homepage", name: "featured", widget: "boolean", default: true }
+      - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
       - { label: "Project Details / Case Study", name: "body", widget: "markdown", required: false }
+      - label: "Project Files (PDFs / Deliverables)"
+        name: "attachments"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Display Name", name: "label", widget: "string" }
+          - { label: "File", name: "file", widget: "file" }
 
   - name: "certificates"
     label: "Credentials & Certificates"
@@ -143,6 +154,9 @@ collections:
       - { label: "Verification Code / ID", name: "verification", widget: "string", required: false }
       - { label: "Official Verification URL", name: "link", widget: "string", required: false }
       - { label: "Certificate Image", name: "image", widget: "image", required: false }
+      - { label: "Certificate PDF", name: "pdf", widget: "file", required: false }
+      - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
+      - { label: "Feature on Homepage", name: "featured", widget: "boolean", default: false }
       - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 100 }
 
   - name: "blogs"
@@ -157,6 +171,7 @@ collections:
       - { label: "Category / Tag", name: "tag", widget: "string" }
       - { label: "Summary / Overview", name: "summary", widget: "text" }
       - { label: "Cover Image", name: "image", widget: "image", required: false }
+      - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
       - { label: "Body (Markdown)", name: "body", widget: "markdown" }
 
   - name: "testimonials"
@@ -169,6 +184,7 @@ collections:
       - { label: "Name", name: "name", widget: "string" }
       - { label: "Role", name: "role", widget: "string" }
       - { label: "Quote", name: "quote", widget: "text" }
+      - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
 
   - name: "pages"
     label: "Pages & Page Sections"
@@ -179,6 +195,7 @@ collections:
     fields:
       - { label: "Page Title", name: "title", widget: "string" }
       - { label: "Meta Description", name: "description", widget: "text", required: false }
+      - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }
       - { label: "Show in Pages Directory", name: "showInPagesIndex", widget: "boolean", default: true }
       - label: "Page Sections (drag to reorder)"
         name: "sections"
@@ -190,12 +207,34 @@ collections:
             options:
               - { label: "Text", value: "text" }
               - { label: "Image", value: "image" }
+              - { label: "Image Gallery", value: "gallery" }
+              - { label: "Quote", value: "quote" }
+              - { label: "Video Embed", value: "video" }
+              - { label: "FAQ", value: "faq" }
               - { label: "Project Collection", value: "projects" }
               - { label: "Certificate Collection", value: "certificates" }
               - { label: "Call to Action", value: "cta" }
+          - { label: "Visible", name: "enabled", widget: "boolean", default: true }
           - { label: "Heading", name: "heading", widget: "string", required: false }
           - { label: "Text", name: "body", widget: "text", required: false }
           - { label: "Image", name: "image", widget: "image", required: false }
           - { label: "Image Alt Text", name: "imageAlt", widget: "string", required: false }
+          - label: "Gallery Images"
+            name: "galleryImages"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false }
+              - { label: "Caption", name: "caption", widget: "string", required: false }
+          - { label: "Quote Attribution", name: "quoteAttribution", widget: "string", required: false }
+          - { label: "YouTube / Vimeo URL", name: "videoUrl", widget: "string", required: false }
+          - label: "FAQ Items"
+            name: "faqs"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Question", name: "question", widget: "string" }
+              - { label: "Answer", name: "answer", widget: "text" }
           - { label: "Button Label", name: "buttonLabel", widget: "string", required: false }
           - { label: "Button URL", name: "buttonUrl", widget: "string", required: false }
