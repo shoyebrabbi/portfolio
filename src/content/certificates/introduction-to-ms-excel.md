@@ -5,5 +5,6 @@ badge: "Microsoft Certified"
 category: "Data & Analytics"
 date: "July 2025"
 verification: "Code : 8072539"
+featured: true
 order: 3
 ---

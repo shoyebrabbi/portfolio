@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import '../../styles/globals.css';
 
-const pages = (await getCollection('pages')).filter((page) => page.data.showInPagesIndex);
+const pages = (await getCollection('pages')).filter((page) => page.data.visible && page.data.showInPagesIndex);
 ---
 
 <!doctype html>

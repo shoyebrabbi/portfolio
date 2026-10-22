@@ -12,12 +12,13 @@
     "githubUrl": "https://github.com",
     "facebookUrl": "https://facebook.com",
     "profileImage": "",
-    "cvFile": ""
+    "cvFile": "",
+    "featuredCertificateLimit": 3
   },
   "skills": [
-    { "category": "Data Analytics & BI", "items": ["SQL / PostgreSQL", "Power BI & DAX", "Excel & Power Query", "Python (Data)"] },
-    { "category": "Systems & Networking", "items": ["Linux Server (Ubuntu/Debian)", "Windows Server", "MikroTik RouterOS", "Cisco CCNA Principles"] },
-    { "category": "Digital Tools & Operations", "items": ["Blogger / CMS Setup", "Canva Visual Design", "Cybersecurity Basics", "Community Management"] }
+    { "category": "Data Analytics & BI", "items": ["SQL / PostgreSQL", "Power BI & DAX", "Excel & Power Query", "Python (Data)"], "visible": true },
+    { "category": "Systems & Networking", "items": ["Linux Server (Ubuntu/Debian)", "Windows Server", "MikroTik RouterOS", "Cisco CCNA Principles"], "visible": true },
+    { "category": "Digital Tools & Operations", "items": ["Blogger / CMS Setup", "Canva Visual Design", "Cybersecurity Basics", "Community Management"], "visible": true }
   ],
   "navigation": [
     { "label": "About", "url": "/#about" },
@@ -30,6 +31,7 @@
   "experience": [
     {
       "role": "Junior Data Analyst & IT Support",
+      "visible": true,
       "company": "Rich Information Technology",
       "period": "March 2021 – May 2023",
       "description": [
@@ -42,6 +44,7 @@
   "education": [
     {
       "degree": "Bachelor of Science in Computer Science & Information Technology (BSc CSIT)",
+      "visible": true,
       "institution": "Southern University Bangladesh",
       "period": "Graduated 2020",
       "highlights": [
@@ -74,6 +77,8 @@
     "certificatesEyebrow": "Certified Credential Vault",
     "certificatesHeading": "Verified Industry Credentials",
     "certificatesDescription": "Officially issued and verified professional credentials.",
+    "featuredCredentialsHeading": "Selected Credentials",
+    "certificatesSeeAllLabel": "View all certificates",
     "footerContactLabel": "Reach out via:"
   },
   "homeSections": [

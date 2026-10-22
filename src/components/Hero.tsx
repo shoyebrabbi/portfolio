@@ -209,7 +209,7 @@ export default function Hero() {
 
       {/* Dynamic Skills Grid (100% Controllable from Admin Panel) */}
       <div className="mt-16 w-full grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-        {skills.map((cat, idx) => {
+        {skills.filter((category) => category.visible).map((cat, idx) => {
           const HeaderIcon = getIconForCategory(cat.category);
           return (
             <motion.div

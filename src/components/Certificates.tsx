@@ -6,6 +6,8 @@ import type { Certificate } from "../data/portfolioData";
 type CertificateData = Omit<Certificate, "image" | "link" | "verification"> & {
   id: string;
   image?: string | null;
+  pdf?: string | null;
+  featured?: boolean;
   link?: string | null;
   verification?: string | null;
 };
@@ -14,18 +16,23 @@ type CertificateLabels = {
   certificatesEyebrow: string;
   certificatesHeading: string;
   certificatesDescription: string;
+  featuredCredentialsHeading: string;
+  certificatesSeeAllLabel: string;
 };
 
 export default function Certificates({
   certificates,
+  featuredCertificates,
   labels,
 }: {
   certificates: CertificateData[];
+  featuredCertificates?: CertificateData[];
   labels: CertificateLabels;
 }) {
   const [isVaultOpen, setIsVaultOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
   const [selectedCert, setSelectedCert] = useState<CertificateData | null>(null);
+  const [isCertificateImageLoaded, setIsCertificateImageLoaded] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,14 +45,40 @@ export default function Certificates({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isVaultOpen, selectedCert]);
 
+  useEffect(() => {
+    setIsCertificateImageLoaded(false);
+  }, [selectedCert?.image]);
+
   const categories = ["All", ...new Set(certificates.map((certificate) => certificate.category))];
 
   const filteredCerts = activeTab === "All" 
     ? certificates 
     : certificates.filter(c => c.category === activeTab || (activeTab === "Professional Skills" && c.category === "Business & Strategy"));
+  const previewCertificates = featuredCertificates ?? certificates.filter((certificate) => certificate.featured).slice(0, 3);
+
+  if (certificates.length === 0) return null;
 
   return (
     <section id="certificates" className="py-16 md:py-24 px-6 max-w-7xl mx-auto w-full">
+      {previewCertificates.length > 0 && (
+        <div className="mb-8">
+          <h2 className="mb-4 text-lg font-bold text-gray-900 dark:text-white">{labels.featuredCredentialsHeading}</h2>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {previewCertificates.map((certificate) => (
+              <button
+                key={certificate.id}
+                type="button"
+                onClick={() => setSelectedCert(certificate)}
+                className="theme-card rounded-xl border p-4 text-left transition-colors hover:border-current"
+              >
+                <span className="theme-accent-text text-[10px] font-bold uppercase">{certificate.badge}</span>
+                <span className="mt-2 block text-sm font-bold text-gray-900 dark:text-white">{certificate.title}</span>
+                <span className="mt-1 block text-xs text-gray-500 dark:text-gray-400">{certificate.issuer}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +102,7 @@ export default function Certificates({
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2 justify-center lg:justify-start">
-              {[...new Set(certificates.map((certificate) => certificate.badge))].slice(0, 5).map((badge, idx) => (
+              {[...new Set(previewCertificates.map((certificate) => certificate.badge))].slice(0, 5).map((badge, idx) => (
                 <span
                   key={idx}
                   className="text-xs px-3 py-1.5 rounded-xl bg-slate-100/90 dark:bg-gray-800/70 text-slate-700 dark:text-gray-300 font-medium border border-slate-200/80 dark:border-gray-700/60 shadow-sm"
@@ -87,7 +120,7 @@ export default function Certificates({
               className="theme-btn relative inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl font-extrabold text-sm sm:text-base tracking-wide transition-all hover:scale-[1.03] active:scale-[0.98] cursor-pointer group/btn w-full sm:w-auto"
             >
               <Award className="w-5 h-5 stroke-[2.5]" />
-              <span>View All {certificates.length} Certificates</span>
+              <span>{labels.certificatesSeeAllLabel} ({certificates.length})</span>
               <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1.5 transition-transform duration-300 stroke-[2.5]" />
             </button>
           </div>
@@ -221,17 +254,17 @@ export default function Certificates({
                   <img
                     src={selectedCert.image}
                     alt={selectedCert.title}
-                    className="max-h-[45vh] w-auto object-contain rounded-xl shadow-lg border border-slate-200 dark:border-gray-800"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = "none";
-                    }}
+                    className={`max-h-[45vh] w-auto object-contain rounded-xl shadow-lg border border-slate-200 dark:border-gray-800 ${isCertificateImageLoaded ? "" : "hidden"}`}
+                    onLoad={() => setIsCertificateImageLoaded(true)}
                   />
                 ) : null}
-                <div className="text-center text-slate-400 dark:text-gray-600 p-4">
-                  <Award className="w-9 h-9 mx-auto mb-1.5 theme-accent-text" />
-                  <p className="text-xs font-semibold">{selectedCert.title}</p>
-                  <p className="text-[10px] mt-0.5 text-slate-500">Document preview will render once image is placed.</p>
-                </div>
+                {!isCertificateImageLoaded && (
+                  <div className="text-center text-slate-400 dark:text-gray-600 p-4">
+                    <Award className="w-9 h-9 mx-auto mb-1.5 theme-accent-text" />
+                    <p className="text-xs font-semibold">{selectedCert.title}</p>
+                    <p className="text-[10px] mt-0.5 text-slate-500">Add a certificate image or PDF from the CMS.</p>
+                  </div>
+                )}
               </div>
 
               {/* Modal Footer (Stacked layout for mobile: ID on top, button below) */}
@@ -239,6 +272,16 @@ export default function Certificates({
                 <div className="text-xs font-mono text-slate-500 text-center sm:text-left bg-slate-100 dark:bg-gray-800/60 px-3 py-2 rounded-xl">
                   {selectedCert.verification || "Verified Credential"}
                 </div>
+
+                {selectedCert.pdf && (
+                  <a
+                    href={selectedCert.pdf}
+                    download
+                    className="flex items-center justify-center rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-semibold text-slate-700 dark:border-gray-700 dark:text-gray-200"
+                  >
+                    Download certificate PDF
+                  </a>
+                )}
                 
                 {selectedCert.link && selectedCert.link !== "#" ? (
                   <a
