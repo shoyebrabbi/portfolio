@@ -9,6 +9,7 @@ const blogs = defineCollection({
     tag: z.string(),
     summary: z.string(),
     image: z.string().optional().nullable(),
+    visible: z.boolean().default(true),
   }),
 });
 
@@ -22,6 +23,8 @@ const projects = defineCollection({
     image: z.string().optional().nullable(),
     liveUrl: z.string().optional().nullable(),
     githubUrl: z.string().optional().nullable(),
+    attachments: z.array(z.object({ label: z.string(), file: z.string() })).default([]),
+    visible: z.boolean().default(true),
     order: z.number().default(100),
     featured: z.boolean().default(true),
   }),
@@ -44,6 +47,9 @@ const certificates = defineCollection({
     verification: z.string().optional().nullable(),
     link: z.string().optional().nullable(),
     image: z.string().optional().nullable(),
+    pdf: z.string().optional().nullable(),
+    visible: z.boolean().default(true),
+    featured: z.boolean().default(false),
     order: z.number().default(100),
   }),
 });
@@ -54,6 +60,7 @@ const testimonials = defineCollection({
     name: z.string(),
     role: z.string(),
     quote: z.string(),
+    visible: z.boolean().default(true),
   }),
 });
 
@@ -62,13 +69,23 @@ const pages = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().default(''),
+    visible: z.boolean().default(true),
     showInPagesIndex: z.boolean().default(true),
     sections: z.array(z.object({
-      type: z.enum(['text', 'image', 'projects', 'certificates', 'cta']),
+      type: z.enum(['text', 'image', 'gallery', 'quote', 'video', 'faq', 'projects', 'certificates', 'cta']),
+      enabled: z.boolean().default(true),
       heading: z.string().optional().nullable(),
       body: z.string().optional().nullable(),
       image: z.string().optional().nullable(),
       imageAlt: z.string().optional().nullable(),
+      galleryImages: z.array(z.object({
+        image: z.string(),
+        alt: z.string().default(''),
+        caption: z.string().optional().nullable(),
+      })).default([]),
+      quoteAttribution: z.string().optional().nullable(),
+      videoUrl: z.string().optional().nullable(),
+      faqs: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
       buttonLabel: z.string().optional().nullable(),
       buttonUrl: z.string().optional().nullable(),
     })).default([]),

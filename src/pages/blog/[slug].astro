@@ -5,7 +5,7 @@ import Footer from '../../components/Footer';
 import '../../styles/globals.css';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blogs');
+  const posts = (await getCollection('blogs')).filter((post) => post.data.visible);
   return posts.map((post) => ({
     params: { slug: post.id.replace(/\.md$/, '') },
     props: { post },
