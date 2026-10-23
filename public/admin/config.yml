@@ -32,7 +32,7 @@ collections:
               - { label: "GitHub URL", name: "githubUrl", widget: "string" }
               - { label: "Facebook URL", name: "facebookUrl", widget: "string" }
               - { label: "Profile Photo", name: "profileImage", widget: "image", required: false }
-              - { label: "CV PDF", name: "cvFile", widget: "file", required: false, allow_multiple: false }
+              - { label: "CV File (PDF or Image)", name: "cvFile", widget: "file", required: false, allow_multiple: false, media_folder: "/public/uploads/cv", public_folder: "/uploads/cv" }
               - { label: "Featured Certificates on Homepage", name: "featuredCertificateLimit", widget: "number", value_type: "int", min: 0, max: 50, default: 3 }
           - label: "Navigation Links"
             name: "navigation"
@@ -153,6 +153,7 @@ collections:
       - { label: "Issue Date", name: "date", widget: "string" }
       - { label: "Verification Code / ID", name: "verification", widget: "string", required: false }
       - { label: "Official Verification URL", name: "link", widget: "string", required: false }
+      - { label: "External Certificate File URL", name: "externalFileUrl", widget: "string", required: false }
       - { label: "Certificate Image", name: "image", widget: "image", required: false }
       - { label: "Certificate PDF", name: "pdf", widget: "file", required: false }
       - { label: "Visible on Website", name: "visible", widget: "boolean", default: true }

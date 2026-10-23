@@ -35,7 +35,8 @@ const testimonials = (await getCollection('testimonials')).filter((testimonial) 
     <title>{labels.siteTitle}</title>
     <meta name="description" content={labels.siteDescription} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+   <!-- <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script> -->
   </head>
   <body class="antialiased">
     <Navbar client:load />
@@ -53,6 +54,8 @@ const testimonials = (await getCollection('testimonials')).filter((testimonial) 
 
     <Footer client:load />
 
+  <!--
+
     <script>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {
@@ -64,5 +67,6 @@ const testimonials = (await getCollection('testimonials')).filter((testimonial) 
         });
       }
     </script>
+    -->
   </body>
 </html>

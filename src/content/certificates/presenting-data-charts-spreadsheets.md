@@ -5,5 +5,6 @@ badge: "HP Foundation"
 category: "Data & Analytics"
 date: "July 2025"
 verification: "Verified"
+visible: false
 order: 6
 ---

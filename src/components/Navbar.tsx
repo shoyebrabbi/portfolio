@@ -125,7 +125,7 @@ export default function Navbar() {
             {/* CV */}
             <a
               href={settings.cvFile || `mailto:${settings.email}?subject=CV%20Request`}
-              download={settings.cvFile ? "Md_Shoyeb_Rabbi_CV.pdf" : undefined}
+              download={settings.cvFile ? true : undefined}
               className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 hover:border-cyan-500 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold transition-all"
             >
               {settings.cvFile ? <Download className="w-3.5 h-3.5" /> : <Mail className="w-3.5 h-3.5" />}
@@ -213,7 +213,7 @@ export default function Navbar() {
                         <div className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-emerald-500 transition-colors">
                           WhatsApp Message
                         </div>
-                        <div className="text-xs text-gray-500">{settings.phone}</div>
+                        <div className="text-xs text-gray-500">{settings.whatsappUrl}</div>
                       </div>
                     </div>
                     <ExternalLink className="w-4 h-4 text-emerald-600" />

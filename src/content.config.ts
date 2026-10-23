@@ -46,6 +46,7 @@ const certificates = defineCollection({
     date: z.string(),
     verification: z.string().optional().nullable(),
     link: z.string().optional().nullable(),
+    externalFileUrl: z.string().optional().nullable(),
     image: z.string().optional().nullable(),
     pdf: z.string().optional().nullable(),
     visible: z.boolean().default(true),

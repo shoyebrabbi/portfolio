@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Download, Mail, Award, Database, Network, 
+import {
+  Download, Mail, Award, ArrowDownToLine, MessageCircle, Database, Network,
   BarChart2, FileSpreadsheet, Binary, 
   Server, Shield, Radio, Palette, Share2, Layers, CheckCircle2, UserRound
 } from "lucide-react";
@@ -29,7 +29,14 @@ const getIconForSkill = (skillName: string) => {
 
 export default function Hero() {
   const { settings, skills } = siteContent;
+  const profileImage = settings.profileImage || "/profile.webp";
+  const profileImageRef = React.useRef<HTMLImageElement>(null);
   const [isProfileImageLoaded, setIsProfileImageLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    const image = profileImageRef.current;
+    if (image?.complete && image.naturalWidth > 0) setIsProfileImageLoaded(true);
+  }, [profileImage]);
 
   return (
     <section id="about" className="pt-28 md:pt-36 pb-16 px-6 max-w-7xl mx-auto relative">
@@ -47,10 +54,12 @@ export default function Hero() {
           <div className="relative w-full max-w-[280px] sm:max-w-sm aspect-[4/5] rounded-[2rem] p-3 theme-card backdrop-blur-2xl border shadow-2xl group">
             <div className="w-full h-full rounded-[1.4rem] overflow-hidden bg-gray-100 dark:bg-gray-950 relative flex items-center justify-center border border-gray-200/60 dark:border-gray-800/80">
               <img
-                src={settings.profileImage || "/profile.webp"}
+                ref={profileImageRef}
+                src={profileImage}
                 alt={settings.name}
                 className={`relative z-10 w-full h-full object-cover object-top transition duration-700 group-hover:scale-105 ${isProfileImageLoaded ? "" : "hidden"}`}
                 onLoad={() => setIsProfileImageLoaded(true)}
+                onError={() => setIsProfileImageLoaded(false)}
               />
               {!isProfileImageLoaded && (
                 <div className="absolute inset-0 z-0 flex flex-col items-center justify-center gap-3 bg-gray-100 p-4 text-center text-gray-500 dark:bg-gray-950 dark:text-gray-400">
@@ -65,7 +74,7 @@ export default function Hero() {
             <motion.div
               animate={{ y: [-5, 5, -5] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -left-4 sm:-left-6 top-10 flex items-center gap-2.5 p-3 rounded-2xl theme-card backdrop-blur-xl border shadow-xl"
+              className="absolute -left-4 sm:-left-6 top-10 z-20 flex items-center gap-2.5 p-3 rounded-2xl theme-card backdrop-blur-xl border shadow-xl"
             >
               <div className="p-2 rounded-xl theme-accent-text bg-current/10">
                 <Database className="w-4 h-4" />
@@ -80,7 +89,7 @@ export default function Hero() {
             <motion.div
               animate={{ y: [5, -5, 5] }}
               transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-4 sm:-right-6 bottom-12 flex items-center gap-2.5 p-3 rounded-2xl theme-card backdrop-blur-xl border shadow-xl"
+              className="absolute -right-4 sm:-right-6 bottom-12 z-20 flex items-center gap-2.5 p-3 rounded-2xl theme-card backdrop-blur-xl border shadow-xl"
             >
               <div className="p-2 rounded-xl theme-accent-text bg-current/10">
                 <Network className="w-4 h-4" />
@@ -140,20 +149,35 @@ export default function Hero() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.4 }}
-            className="mt-8 flex flex-wrap gap-3.5 justify-center lg:justify-start items-center w-full sm:w-auto"
+            className="mt-8 flex flex-wrap gap-3.5 justify-center lg:justify-start items-stretch w-full sm:w-auto"
           >
             <a
               href={settings.cvFile || `mailto:${settings.email}?subject=CV%20Request`}
-              download={settings.cvFile ? "Md_Shoyeb_Rabbi_CV.pdf" : undefined}
-              className="theme-btn flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm tracking-wide transition-all hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto"
+              download={settings.cvFile ? true : undefined}
+              className="theme-btn group relative isolate flex min-h-16 w-full items-center justify-between gap-3 overflow-hidden rounded-2xl px-4 py-3 text-left shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:w-auto"
             >
-              {settings.cvFile ? <Download className="w-4 h-4 stroke-[2.5]" /> : <Mail className="w-4 h-4 stroke-[2.5]" />}
-              <span>{settings.cvFile ? siteContent.labels.cvDownloadLabel : siteContent.labels.cvRequestLabel}</span>
+              <span className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-white/20 via-transparent to-white/10 opacity-70 transition-opacity duration-300 group-hover:opacity-100"></span>
+              <span className="relative z-10 flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/20 shadow-inner ring-1 ring-white/30">
+                  {settings.cvFile
+                    ? <Download className="h-4 w-4 stroke-[2.5] transition-transform duration-300 group-hover:translate-y-0.5" />
+                    : <Mail className="h-4 w-4 stroke-[2.5]" />}
+                </span>
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-sm font-extrabold tracking-wide">
+                    {settings.cvFile ? siteContent.labels.cvDownloadLabel : siteContent.labels.cvRequestLabel}
+                  </span>
+                  <span className="text-[10px] font-medium text-white/80">
+                    {settings.cvFile ? "Explore my experience & skills" : "Get in touch for my CV"}
+                  </span>
+                </span>
+              </span>
+              {settings.cvFile && <ArrowDownToLine className="relative z-10 h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-y-0.5" />}
             </a>
 
             <a
               href="#certificates"
-              className="theme-card flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl border text-gray-800 dark:text-gray-200 font-semibold text-sm transition-all shadow-sm hover:-translate-y-0.5 w-full sm:w-auto"
+              className="theme-card flex min-h-16 w-full items-center justify-center gap-2.5 rounded-2xl border px-5 py-3 text-sm font-semibold text-gray-800 shadow-sm transition-all hover:-translate-y-1 hover:border-current hover:shadow-lg dark:text-gray-200 sm:w-auto"
             >
               <Award className="w-4 h-4 theme-accent-text stroke-[2]" />
               <span>{siteContent.labels.credentialsButton}</span>
@@ -163,9 +187,10 @@ export default function Hero() {
               href={settings.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-semibold text-sm transition-all w-full sm:w-auto"
+              className="flex min-h-16 w-full items-center justify-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-semibold text-emerald-600 shadow-sm transition-all hover:-translate-y-1 hover:bg-emerald-500/20 hover:shadow-lg dark:text-emerald-400 sm:w-auto"
             >
-              <span>💬 WhatsApp</span>
+              <MessageCircle className="h-4 w-4" />
+              <span>WhatsApp</span>
             </a>
           </motion.div>
 

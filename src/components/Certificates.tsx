@@ -7,6 +7,7 @@ type CertificateData = Omit<Certificate, "image" | "link" | "verification"> & {
   id: string;
   image?: string | null;
   pdf?: string | null;
+  externalFileUrl?: string | null;
   featured?: boolean;
   link?: string | null;
   verification?: string | null;
@@ -152,7 +153,7 @@ export default function Certificates({
                       Credentials Vault
                     </h3>
                     <p className="text-[11px] sm:text-xs text-slate-500 dark:text-gray-400">
-                      Browse and verify all 12 accredited certifications
+                      Browse and verify all {certificates.length} visible credentials
                     </p>
                   </div>
                 </div>
@@ -268,7 +269,7 @@ export default function Certificates({
               </div>
 
               {/* Modal Footer (Stacked layout for mobile: ID on top, button below) */}
-              <div className="p-4 border-t border-slate-100 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-white dark:bg-gray-900">
+              <div className="p-4 border-t border-slate-100 dark:border-gray-800 flex flex-col sm:flex-row sm:flex-wrap justify-between items-stretch sm:items-center gap-3 bg-white dark:bg-gray-900">
                 <div className="text-xs font-mono text-slate-500 text-center sm:text-left bg-slate-100 dark:bg-gray-800/60 px-3 py-2 rounded-xl">
                   {selectedCert.verification || "Verified Credential"}
                 </div>
@@ -280,6 +281,17 @@ export default function Certificates({
                     className="flex items-center justify-center rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-semibold text-slate-700 dark:border-gray-700 dark:text-gray-200"
                   >
                     Download certificate PDF
+                  </a>
+                )}
+
+                {selectedCert.externalFileUrl && (
+                  <a
+                    href={selectedCert.externalFileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-semibold text-slate-700 dark:border-gray-700 dark:text-gray-200"
+                  >
+                    Open file in Google Drive
                   </a>
                 )}
                 
@@ -294,8 +306,8 @@ export default function Certificates({
                     <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                   </a>
                 ) : (
-                  <span className="text-xs font-semibold text-slate-400 px-3 py-2.5 text-center rounded-xl bg-slate-100 dark:bg-gray-800">
-                    Direct Credential Verified
+                    <span className="text-xs font-semibold text-slate-400 px-3 py-2.5 text-center rounded-xl bg-slate-100 dark:bg-gray-800">
+                    Verification link not provided
                   </span>
                 )}
               </div>
